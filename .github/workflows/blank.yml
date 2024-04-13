@@ -1,0 +1,55 @@
+#Este codigo revisa que no se repitan los numeros mas que "R" veces
+#Primero convierte el num y el den en str para poder agregarlos digito a digito a una lista
+def condicion(den,num,R):
+    den = str(den)
+    num = str(num)
+    cont = 0
+    L = []
+    for i in den:
+        L.append(i)
+    for i in num:
+        L.append(i)
+    #Una vez que L tenga los digitos de num y den como elementos va revisando 1 por 1 que no se repitan mas que "R" veces
+    for i in range(len(L)):
+        for x in range (len(L)):
+            if L[i] == L[x]:
+                cont += 1
+        if cont > R:
+            return False
+        cont = 0
+    return True
+#Con esto abrimos el archivo txt con nuestros inputs y procedemos a leer la primera linea de texto que es el "T"
+file = open("InputPR1.txt","r")
+T = int(file.readline()) 
+#Con este while repetimos el codigo "T" veces
+while T:
+    #Con este codigo separamos el "C" y "R" del txt para usar en nuestro programa
+    T -= 1
+    C, R = file.readline().split()
+    C = int(C)
+    R = int(R)
+    num = 0
+    den = 1000
+    #El ciclo se acaba cuando num sobrepase 99999 y se vuelva un numero de 6 digitos
+    while num < 99999:
+        #Basado en la definicion de divisibilidad b|a = aq
+        #Entonces multiplicando den siendo el denominador por "C" podemos obtener el numerador
+        num = den * C
+        #Si "R" es 1 entonces significa que se puede usar 0 como primer digito en el numerador o el denominador
+        #Entonces este codigo revisa si los 2 son de 4 digitos y si fuera el caso no los imprime
+        #Cabe destacar que para poder medir estas variables las converti en un str para poder usar len
+        if R == 1:
+            if not len(str(num)) == 4 or not len(str(den)) == 4:
+                #Con esto revisa si el "num" y el "den" cumplen con las condiciones para que se impriman
+                if condicion(den,num,R):
+                    print(num,"/",den,"=",C)
+        #Este seria el caso donde "R" es mayor que 1
+        else:
+            if condicion(den,num,R):
+                    print(num,"/",den,"=",C)
+        #Como volvimos a num y a den en "str" anteriormente ahora los volvemos un int
+        num = int(num)
+        den = int(den)
+        #Finalmente aumentamos el denominador por 1
+        den += 1     
+file.close()       
